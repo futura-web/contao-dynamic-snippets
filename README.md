@@ -45,7 +45,7 @@ Ein Platzhalter hat den Aufbau `[[typ:name|Beschriftung]]`. Typ und Beschriftung
 | `[[checkbox:rahmen\|Mit Rahmen]]` | Ja/Nein, Ausgabe `1` oder leer |
 | `[[select:variante\|Variante\|hell,dunkel]]` | Auswahlfeld mit den Optionen hell und dunkel |
 | `[[select:farbe\|Farbe\|red=Rot,blue=Blau]]` | Auswahlfeld, vor dem `=` steht der Wert, dahinter das Label |
-| `[[if:link]] … [[/if]]` | Block nur ausgeben, wenn `link` befüllt oder angehakt ist |
+| `[[if:link]] Inhalt [[/if]]` | Block nur ausgeben, wenn `link` befüllt oder angehakt ist |
 
 Namen bestehen aus Kleinbuchstaben, Ziffern und Unterstrich. Derselbe Platzhalter darf mehrfach vorkommen und wird im Backend nur einmal abgefragt. Contao-Insert-Tags wie `{{link_url::12}}` funktionieren weiterhin, sowohl in der Vorlage als auch in den eingegebenen Werten.
 
@@ -97,5 +97,5 @@ Eine Vorlage, die noch von Inhaltselementen verwendet wird, kann nicht gelöscht
 
 ## Bekannte Grenzen
 
-- `[[if:…]]`-Blöcke können nicht verschachtelt werden.
+- Bedingungsblöcke mit `[[if:name]]` können nicht verschachtelt werden.
 - Beim Wechsel der Vorlage bleiben bereits eingegebene Werte gleichnamiger Felder erhalten.
