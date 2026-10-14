@@ -120,22 +120,39 @@ class SnippetTemplateListener
     public function renderSyntaxHelp(DataContainer $dc): string
     {
         $lang = $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] ?? [];
+        $structure = $lang['structure'] ?? [];
 
-        $rows = '';
+        return sprintf(
+            '<div class="widget long clr"><h3><label>%s</label></h3>'
+            .'<div class="tl_help" style="padding:8px 12px;border:1px solid #d0d0d0;border-radius:2px;background:#f9f9f9;font-size:.9em;line-height:1.5">'
+            .'<p style="margin:0 0 6px"><strong>%s:</strong> <code>%s</code></p>%s'
+            .'<p style="margin:12px 0 6px"><strong>%s:</strong></p>%s'
+            .'<p style="margin:8px 0 0">%s</p></div></div>',
+            StringUtil::specialchars($lang['title'] ?? 'Syntax'),
+            StringUtil::specialchars($structure['title'] ?? ''),
+            StringUtil::specialchars($structure['pattern'] ?? ''),
+            $this->renderHelpTable($structure['rows'] ?? []),
+            StringUtil::specialchars($lang['examples'] ?? ''),
+            $this->renderHelpTable($lang['rows'] ?? []),
+            StringUtil::specialchars($lang['note'] ?? ''),
+        );
+    }
 
-        foreach ($lang['rows'] ?? [] as [$code, $text]) {
-            $rows .= sprintf(
-                '<tr><td style="white-space:nowrap;padding:3px 12px 3px 0"><code>%s</code></td><td style="padding:3px 0">%s</td></tr>',
+    /**
+     * @param array<int, array{0: string, 1: string}> $rows
+     */
+    private function renderHelpTable(array $rows): string
+    {
+        $html = '';
+
+        foreach ($rows as [$code, $text]) {
+            $html .= sprintf(
+                '<tr><td style="white-space:nowrap;padding:3px 12px 3px 0;vertical-align:top"><code>%s</code></td><td style="padding:3px 0">%s</td></tr>',
                 StringUtil::specialchars($code),
                 StringUtil::specialchars($text),
             );
         }
 
-        return sprintf(
-            '<div class="widget long clr"><h3><label>%s</label></h3><div class="tl_help" style="padding:8px 12px;border:1px solid #d0d0d0;border-radius:2px;background:#f9f9f9;font-size:.9em;line-height:1.5"><table style="border-collapse:collapse">%s</table><p style="margin:8px 0 0">%s</p></div></div>',
-            StringUtil::specialchars($lang['title'] ?? 'Syntax'),
-            $rows,
-            StringUtil::specialchars($lang['note'] ?? ''),
-        );
+        return '<table style="border-collapse:collapse">'.$html.'</table>';
     }
 }

@@ -14,6 +14,16 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['image_legend'] = 'Image settings';
 
 $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
     'title' => 'Placeholder syntax',
+    'structure' => [
+        'title' => 'Structure',
+        'pattern' => '[[type:name|Label]]',
+        'rows' => [
+            ['type', 'Field type: text, textarea, rte, html, image, url, number, checkbox, select. Optional, defaults to text.'],
+            ['name', 'Technical field name: lowercase letters, digits, underscore. Required.'],
+            ['Label', 'Text above the input field in the back end. Optional, defaults to the name.'],
+        ],
+    ],
+    'examples' => 'Examples',
     'rows' => [
         ['[[title]]', 'Single-line text field named "title"'],
         ['[[text:title|Headline]]', 'The same, labelled "Headline" in the back end'],
@@ -28,7 +38,7 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
         ['[[select:color|Color|red=Red,blue=Blue]]', 'Select field; value before the =, label after it'],
         ['[[if:link]] content [[/if]]', 'Output block only if field "link" is filled or checked'],
     ],
-    'note' => 'Structure: [[type:name|Label]]. Type and label are optional, without a type a text field is created. Names consist of lowercase letters, digits and underscore. Insert tags such as {{link_url::12}} keep working. The same placeholder may appear several times and is asked for only once.',
+    'note' => 'Names consist of lowercase letters, digits and underscore. Insert tags such as {{link_url::12}} keep working. The same placeholder may appear several times and is asked for only once.',
 ];
 
 $GLOBALS['TL_LANG']['tl_snippet_template']['deleteBlocked'] = 'The template "%s" is still used by %d content element(s) and cannot be deleted.';

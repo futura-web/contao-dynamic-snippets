@@ -30,7 +30,15 @@ Alternativ das Paket in ein Git-Repository legen und über Packagist oder ein VC
 
 ### Platzhalter-Syntax
 
-Ein Platzhalter hat den Aufbau `[[typ:name|Beschriftung]]`. Typ und Beschriftung sind optional. `name` ist der technische Feldname, `Beschriftung` erscheint im Backend über dem Eingabefeld.
+**Aufbau:** `[[typ:name|Beschriftung]]`
+
+| Bestandteil | Bedeutung | Pflicht |
+| --- | --- | --- |
+| `typ` | Feldtyp: text, textarea, rte, html, image, url, number, checkbox, select | nein, Standard ist text |
+| `name` | Technischer Feldname: Kleinbuchstaben, Ziffern, Unterstrich | ja |
+| `Beschriftung` | Text über dem Eingabefeld im Backend | nein, Standard ist der Name |
+
+**Beispiele:**
 
 | Beispiel | Bedeutung |
 | --- | --- |

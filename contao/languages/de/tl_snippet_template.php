@@ -14,6 +14,16 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['image_legend'] = 'Bildeinstellungen'
 
 $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
     'title' => 'Platzhalter-Syntax',
+    'structure' => [
+        'title' => 'Aufbau',
+        'pattern' => '[[typ:name|Beschriftung]]',
+        'rows' => [
+            ['typ', 'Feldtyp: text, textarea, rte, html, image, url, number, checkbox, select. Optional, Standard ist text.'],
+            ['name', 'Technischer Feldname: Kleinbuchstaben, Ziffern, Unterstrich. Pflicht.'],
+            ['Beschriftung', 'Text über dem Eingabefeld im Backend. Optional, Standard ist der Name.'],
+        ],
+    ],
+    'examples' => 'Beispiele',
     'rows' => [
         ['[[titel]]', 'Einzeiliges Textfeld namens "titel"'],
         ['[[text:titel|Überschrift]]', 'Dasselbe, im Backend beschriftet mit "Überschrift"'],
@@ -28,7 +38,7 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
         ['[[select:farbe|Farbe|red=Rot,blue=Blau]]', 'Auswahlfeld; vor dem = steht der Wert, dahinter das Label'],
         ['[[if:link]] Inhalt [[/if]]', 'Block nur ausgeben, wenn das Feld "link" befüllt bzw. angehakt ist'],
     ],
-    'note' => 'Aufbau: [[typ:name|Beschriftung]]. Typ und Beschriftung sind optional, ohne Typ entsteht ein Textfeld. Namen bestehen aus Kleinbuchstaben, Ziffern und Unterstrich. Insert-Tags wie {{link_url::12}} funktionieren weiterhin. Derselbe Platzhalter darf mehrfach vorkommen und wird nur einmal abgefragt.',
+    'note' => 'Namen bestehen aus Kleinbuchstaben, Ziffern und Unterstrich. Insert-Tags wie {{link_url::12}} funktionieren weiterhin. Derselbe Platzhalter darf mehrfach vorkommen und wird nur einmal abgefragt.',
 ];
 
 $GLOBALS['TL_LANG']['tl_snippet_template']['deleteBlocked'] = 'Die Vorlage "%s" wird noch von %d Inhaltselement(en) verwendet und kann nicht gelöscht werden.';
