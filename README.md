@@ -25,8 +25,9 @@ Alternativ das Paket in ein Git-Repository legen und über Packagist oder ein VC
 ## Benutzung
 
 1. Backend → **Inhalte → Snippet-Vorlagen** → neue Vorlage anlegen.
-2. HTML einfügen und Platzhalter setzen.
-3. Im Artikel ein Inhaltselement vom Typ **Snippet-Element** anlegen, Vorlage wählen, Felder befüllen.
+2. Einen sprechenden **Namen** vergeben, z. B. "Teaser-Kachel" oder "YouTube-Embed". Unter diesem Namen erscheint die Vorlage später in der Auswahl. Optional eine Beschreibung als Notiz für Redakteure ergänzen.
+3. HTML einfügen und Platzhalter setzen.
+4. Im Artikel ein Inhaltselement vom Typ **Snippet-Element** anlegen, im Dropdown die Vorlage nach Namen wählen, Felder befüllen.
 
 ### Platzhalter-Syntax
 
