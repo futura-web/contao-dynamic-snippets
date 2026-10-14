@@ -89,6 +89,10 @@ Das Backend-Modul **Snippet-Vorlagen** wird über die Benutzergruppen freigegebe
 - Die Felder werden im `config.onload` von `tl_content` dynamisch registriert und per `PaletteManipulator` eingehängt.
 - Die Frontend-Ausgabe wird mit `contao.db.tl_snippet_template.<id>` getaggt, damit der HTTP-Cache bei Änderungen an der Vorlage invalidiert wird.
 
+## Löschschutz
+
+Eine Vorlage, die noch von Inhaltselementen verwendet wird, kann nicht gelöscht werden. Das Löschen-Icon ist dann ausgegraut, und ein Löschversuch über "Mehrere bearbeiten" wird mit einer Fehlermeldung abgebrochen.
+
 ## Bekannte Grenzen
 
 - `[[if:…]]`-Blöcke können nicht verschachtelt werden.

@@ -6,8 +6,11 @@ namespace Futura\ContaoDynamicSnippets\EventListener\DataContainer;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Slug\Slug;
+use Contao\Controller;
 use Contao\DataContainer;
+use Contao\Image;
 use Contao\Input;
+use Contao\Message;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Futura\ContaoDynamicSnippets\Snippet\Placeholder;
@@ -70,6 +73,47 @@ class SnippetTemplateListener
         }
 
         return $out;
+    }
+
+    #[AsCallback('tl_snippet_template', 'list.operations.delete.button')]
+    public function deleteButton(array $row, string|null $href, string $label, string $title, string|null $icon, string $attributes): string
+    {
+        if ($this->countUsages((int) $row['id']) > 0) {
+            return Image::getHtml(str_replace('.svg', '--disabled.svg', (string) $icon)).' ';
+        }
+
+        return sprintf(
+            '<a href="%s" title="%s"%s>%s</a> ',
+            Controller::addToUrl($href.'&amp;id='.$row['id']),
+            StringUtil::specialchars($title),
+            $attributes,
+            Image::getHtml((string) $icon, $label),
+        );
+    }
+
+    #[AsCallback('tl_snippet_template', 'config.ondelete')]
+    public function preventDeleteIfUsed(DataContainer $dc): void
+    {
+        $id = (int) $dc->id;
+        $usages = $this->countUsages($id);
+
+        if ($usages < 1) {
+            return;
+        }
+
+        $name = (string) $this->connection->fetchOne('SELECT name FROM tl_snippet_template WHERE id = ?', [$id]);
+
+        Message::addError(sprintf($GLOBALS['TL_LANG']['tl_snippet_template']['deleteBlocked'], $name, $usages));
+
+        Controller::redirect(Controller::addToUrl('', true, ['act', 'id']));
+    }
+
+    private function countUsages(int $templateId): int
+    {
+        return (int) $this->connection->fetchOne(
+            "SELECT COUNT(*) FROM tl_content WHERE type = 'snippet_element' AND snippetTemplate = ?",
+            [$templateId],
+        );
     }
 
     #[AsCallback('tl_snippet_template', 'fields.syntaxHelp.input_field')]

@@ -29,3 +29,5 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
     ],
     'note' => 'Names consist of lowercase letters, digits and underscore. Insert tags such as {{link_url::12}} keep working. The same placeholder may appear several times and is asked for only once.',
 ];
+
+$GLOBALS['TL_LANG']['tl_snippet_template']['deleteBlocked'] = 'The template "%s" is still used by %d content element(s) and cannot be deleted.';

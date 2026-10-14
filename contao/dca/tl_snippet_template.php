@@ -41,7 +41,12 @@ $GLOBALS['TL_DCA']['tl_snippet_template'] = [
         'operations' => [
             'edit',
             'copy',
-            'delete',
+            'delete' => [
+                'href' => 'act=delete',
+                'icon' => 'delete.svg',
+                'attributes' => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\'))return false;Backend.getScrollOffset()"',
+                // button_callback wird im SnippetTemplateListener registriert
+            ],
             'show',
         ],
     ],
