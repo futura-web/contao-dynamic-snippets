@@ -1,0 +1,95 @@
+# Contao Snippet Elements
+
+Wiederverwendbare HTML-Snippets mit Platzhaltern als Inhaltselemente für **Contao 5**.
+
+Ein Admin legt einmal eine Vorlage an, z. B. einen Embed-Code, eine Karte oder ein Layout-Fragment, und markiert die veränderlichen Stellen mit Platzhaltern. Redakteure wählen die Vorlage danach als normales Inhaltselement aus und füllen nur noch die Felder aus. HTML-Kenntnisse sind dafür nicht nötig.
+
+## Installation
+
+Als lokales Paket (z. B. in `packages/contao-snippet-elements` der Contao-Installation):
+
+```json
+"repositories": [
+    { "type": "path", "url": "packages/contao-snippet-elements" }
+]
+```
+
+```bash
+composer require futura/contao-snippet-elements:@dev
+vendor/bin/contao-console contao:migrate
+vendor/bin/contao-console cache:clear
+```
+
+Alternativ das Paket in ein Git-Repository legen und über Packagist oder ein VCS-Repository einbinden.
+
+## Benutzung
+
+1. Backend → **Inhalte → Snippet-Vorlagen** → neue Vorlage anlegen.
+2. HTML einfügen und Platzhalter setzen.
+3. Im Artikel ein Inhaltselement vom Typ **Snippet-Element** anlegen, Vorlage wählen, Felder befüllen.
+
+### Platzhalter-Syntax
+
+| Syntax | Bedeutung |
+| --- | --- |
+| `[[name]]` | Einzeiliges Textfeld |
+| `[[typ:name\|Beschriftung]]` | Feld mit Typ und Beschriftung im Backend |
+| `[[text:…]]` | Text, einzeilig |
+| `[[textarea:…]]` | Text, mehrzeilig, Zeilenumbrüche werden zu `<br>` |
+| `[[rte:…]]` | Formatierter Text mit TinyMCE |
+| `[[html:…]]` | Freies HTML mit Code-Editor |
+| `[[image:…]]` | Bild aus der Dateiverwaltung, Ausgabe als `<figure>` in der Bildgröße der Vorlage |
+| `[[url:…]]` | Link-Adresse mit Seiten- und Dateiauswahl |
+| `[[number:…]]` | Ganzzahl |
+| `[[checkbox:…]]` | Ja/Nein, Ausgabe `1` oder leer |
+| `[[select:name\|Label\|a,b=Beta,c]]` | Auswahlfeld, ohne `=` sind Wert und Label gleich |
+| `[[if:name]] … [[/if]]` | Block nur ausgeben, wenn `name` befüllt oder angehakt ist |
+
+Namen bestehen aus Kleinbuchstaben, Ziffern und Unterstrich. Derselbe Platzhalter darf mehrfach vorkommen und wird im Backend nur einmal abgefragt. Contao-Insert-Tags wie `{{link_url::12}}` funktionieren weiterhin, sowohl in der Vorlage als auch in den eingegebenen Werten.
+
+### Beispiel: Teaser-Kachel
+
+```html
+<div class="teaser teaser--[[select:variante|Variante|hell,dunkel]]">
+  [[image:bild|Bild]]
+  <h3>[[text:titel|Titel]]</h3>
+  <p>[[textarea:intro|Einleitung]]</p>
+  [[if:link]]<a class="button" href="[[url:link|Link-Ziel]]">[[text:linktext|Linktext]]</a>[[/if]]
+</div>
+```
+
+### Beispiel: YouTube-Embed
+
+```html
+<div class="video-wrapper">
+  <iframe src="https://www.youtube-nocookie.com/embed/[[text:video_id|YouTube-Video-ID]]"
+          title="[[text:titel|Titel]]" loading="lazy" allowfullscreen></iframe>
+</div>
+```
+
+## Ausgabe
+
+Werte werden je nach Typ behandelt:
+
+- `text`, `url`, `number`, `select`, `checkbox`: HTML-Sonderzeichen werden maskiert.
+- `textarea`: maskiert plus `nl2br`.
+- `html`, `rte`: unverändert ausgegeben.
+- `image`: über Contao Image Studio als `<figure>` mit `srcset`, Alt-Text und Bildunterschrift aus den Datei-Metadaten.
+
+Das Twig-Template `content_element/snippet_element.html.twig` kann wie üblich überschrieben werden. Verfügbare Variablen: `html` (fertiges Snippet), `snippet` (`id`, `name`, `alias`) und `values` (Rohwerte).
+
+## Rechte
+
+Das Backend-Modul **Snippet-Vorlagen** wird über die Benutzergruppen freigegeben. Da Vorlagen beliebiges HTML enthalten, sollte nur Admins oder vertrauenswürdigen Gruppen Zugriff gegeben werden. Redakteure benötigen nur Zugriff auf das Inhaltselement.
+
+## Technik
+
+- Vorlagen liegen in `tl_snippet_template`.
+- Das Inhaltselement speichert die Vorlagen-ID in `tl_content.snippetTemplate` und alle Feldwerte als JSON in `tl_content.snippetData`. Neue Platzhalter erfordern deshalb keine Datenbankmigration.
+- Die Felder werden im `config.onload` von `tl_content` dynamisch registriert und per `PaletteManipulator` eingehängt.
+- Die Frontend-Ausgabe wird mit `contao.db.tl_snippet_template.<id>` getaggt, damit der HTTP-Cache bei Änderungen an der Vorlage invalidiert wird.
+
+## Bekannte Grenzen
+
+- `[[if:…]]`-Blöcke können nicht verschachtelt werden.
+- Beim Wechsel der Vorlage bleiben bereits eingegebene Werte gleichnamiger Felder erhalten.

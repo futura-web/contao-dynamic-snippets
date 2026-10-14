@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Futura\ContaoSnippetElements\:
+        resource: ../src/
+        exclude:
+            - ../src/ContaoManager/
+            - ../src/DependencyInjection/
+            - ../src/ContaoSnippetElementsBundle.php
+            - ../src/Snippet/Placeholder.php
