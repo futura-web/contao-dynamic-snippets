@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Futura\ContaoSnippetElements\Snippet;
+namespace Futura\ContaoDynamicSnippets\Snippet;
 
 /**
  * Baut aus einem Platzhalter die DCA-Felddefinition für tl_content.

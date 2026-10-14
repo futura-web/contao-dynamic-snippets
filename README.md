@@ -1,4 +1,4 @@
-# Contao Snippet Elements
+# Contao Dynamic Snippets
 
 Wiederverwendbare HTML-Snippets mit Platzhaltern als Inhaltselemente für **Contao 5**.
 
@@ -6,16 +6,16 @@ Ein Admin legt einmal eine Vorlage an, z. B. einen Embed-Code, eine Karte oder e
 
 ## Installation
 
-Als lokales Paket (z. B. in `packages/contao-snippet-elements` der Contao-Installation):
+Als lokales Paket (z. B. in `packages/contao-dynamic-snippets` der Contao-Installation):
 
 ```json
 "repositories": [
-    { "type": "path", "url": "packages/contao-snippet-elements" }
+    { "type": "path", "url": "packages/contao-dynamic-snippets" }
 ]
 ```
 
 ```bash
-composer require futura/contao-snippet-elements:@dev
+composer require futura/contao-dynamic-snippets:@dev
 vendor/bin/contao-console contao:migrate
 vendor/bin/contao-console cache:clear
 ```

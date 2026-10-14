@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Futura\ContaoSnippetElements\EventListener\DataContainer;
+namespace Futura\ContaoDynamicSnippets\EventListener\DataContainer;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Slug\Slug;
@@ -10,8 +10,8 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
-use Futura\ContaoSnippetElements\Snippet\Placeholder;
-use Futura\ContaoSnippetElements\Snippet\SnippetParser;
+use Futura\ContaoDynamicSnippets\Snippet\Placeholder;
+use Futura\ContaoDynamicSnippets\Snippet\SnippetParser;
 
 class SnippetTemplateListener
 {

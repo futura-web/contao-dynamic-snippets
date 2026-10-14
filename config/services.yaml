@@ -4,10 +4,10 @@ services:
         autoconfigure: true
         public: false
 
-    Futura\ContaoSnippetElements\:
+    Futura\ContaoDynamicSnippets\:
         resource: ../src/
         exclude:
             - ../src/ContaoManager/
             - ../src/DependencyInjection/
-            - ../src/ContaoSnippetElementsBundle.php
+            - ../src/ContaoDynamicSnippetsBundle.php
             - ../src/Snippet/Placeholder.php

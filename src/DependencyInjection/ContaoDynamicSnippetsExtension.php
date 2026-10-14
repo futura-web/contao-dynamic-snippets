@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Futura\ContaoSnippetElements\DependencyInjection;
+namespace Futura\ContaoDynamicSnippets\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class ContaoSnippetElementsExtension extends Extension
+class ContaoDynamicSnippetsExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {

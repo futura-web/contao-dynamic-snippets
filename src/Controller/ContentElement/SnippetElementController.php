@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Futura\ContaoSnippetElements\Controller\ContentElement;
+namespace Futura\ContaoDynamicSnippets\Controller\ContentElement;
 
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
@@ -13,8 +13,8 @@ use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\StringUtil;
 use Contao\Validator;
 use Doctrine\DBAL\Connection;
-use Futura\ContaoSnippetElements\Snippet\Placeholder;
-use Futura\ContaoSnippetElements\Snippet\SnippetParser;
+use Futura\ContaoDynamicSnippets\Snippet\Placeholder;
+use Futura\ContaoDynamicSnippets\Snippet\SnippetParser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;

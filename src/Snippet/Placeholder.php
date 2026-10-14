@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Futura\ContaoSnippetElements\Snippet;
+namespace Futura\ContaoDynamicSnippets\Snippet;
 
 /**
  * Ein Platzhalter im Snippet-HTML, z. B. [[image:bild|Bild]].
