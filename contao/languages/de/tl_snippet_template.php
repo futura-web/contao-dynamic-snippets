@@ -15,19 +15,20 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['image_legend'] = 'Bildeinstellungen'
 $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
     'title' => 'Platzhalter-Syntax',
     'rows' => [
-        ['[[name]]', 'Einzeiliges Textfeld'],
-        ['[[typ:name|Beschriftung]]', 'Feld mit Typ und Beschriftung im Backend'],
-        ['[[text:…]] / [[textarea:…]]', 'Text einzeilig / mehrzeilig (Zeilenumbrüche werden zu <br>)'],
-        ['[[rte:…]]', 'Formatierter Text mit TinyMCE'],
-        ['[[html:…]]', 'Freies HTML mit Code-Editor'],
-        ['[[image:…]]', 'Bild aus der Dateiverwaltung, Ausgabe als <figure> in der eingestellten Bildgröße'],
-        ['[[url:…]]', 'Link-Adresse mit Seitenauswahl'],
-        ['[[number:…]]', 'Ganzzahl'],
-        ['[[checkbox:…]]', 'Ja/Nein, Ausgabe 1 oder leer'],
-        ['[[select:name|Label|a,b=Beta,c]]', 'Auswahlfeld; ohne "=" ist Wert und Label gleich'],
-        ['[[if:name]] … [[/if]]', 'Block nur ausgeben, wenn das Feld "name" befüllt bzw. angehakt ist'],
+        ['[[titel]]', 'Einzeiliges Textfeld namens "titel"'],
+        ['[[text:titel|Überschrift]]', 'Dasselbe, im Backend beschriftet mit "Überschrift"'],
+        ['[[textarea:intro|Einleitung]]', 'Mehrzeiliger Text, Zeilenumbrüche werden zu <br>'],
+        ['[[rte:inhalt|Fließtext]]', 'Formatierter Text mit TinyMCE'],
+        ['[[html:code|Embed-Code]]', 'Freies HTML mit Code-Editor'],
+        ['[[image:bild|Bild]]', 'Bild aus der Dateiverwaltung, Ausgabe als <figure> in der eingestellten Bildgröße'],
+        ['[[url:link|Link-Ziel]]', 'Link-Adresse mit Seiten- und Dateiauswahl'],
+        ['[[number:anzahl|Anzahl]]', 'Ganzzahl'],
+        ['[[checkbox:rahmen|Mit Rahmen]]', 'Ja/Nein, Ausgabe 1 oder leer'],
+        ['[[select:variante|Variante|hell,dunkel]]', 'Auswahlfeld mit den Optionen hell und dunkel'],
+        ['[[select:farbe|Farbe|red=Rot,blue=Blau]]', 'Auswahlfeld; vor dem = steht der Wert, dahinter das Label'],
+        ['[[if:link]] … [[/if]]', 'Block nur ausgeben, wenn das Feld "link" befüllt bzw. angehakt ist'],
     ],
-    'note' => 'Namen bestehen aus Kleinbuchstaben, Ziffern und Unterstrich. Insert-Tags wie {{link_url::12}} funktionieren weiterhin. Derselbe Platzhalter darf mehrfach vorkommen und wird nur einmal abgefragt.',
+    'note' => 'Aufbau: [[typ:name|Beschriftung]]. Typ und Beschriftung sind optional, ohne Typ entsteht ein Textfeld. Namen bestehen aus Kleinbuchstaben, Ziffern und Unterstrich. Insert-Tags wie {{link_url::12}} funktionieren weiterhin. Derselbe Platzhalter darf mehrfach vorkommen und wird nur einmal abgefragt.',
 ];
 
 $GLOBALS['TL_LANG']['tl_snippet_template']['deleteBlocked'] = 'Die Vorlage "%s" wird noch von %d Inhaltselement(en) verwendet und kann nicht gelöscht werden.';

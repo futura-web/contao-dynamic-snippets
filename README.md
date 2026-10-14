@@ -30,20 +30,22 @@ Alternativ das Paket in ein Git-Repository legen und über Packagist oder ein VC
 
 ### Platzhalter-Syntax
 
-| Syntax | Bedeutung |
+Ein Platzhalter hat den Aufbau `[[typ:name|Beschriftung]]`. Typ und Beschriftung sind optional. `name` ist der technische Feldname, `Beschriftung` erscheint im Backend über dem Eingabefeld.
+
+| Beispiel | Bedeutung |
 | --- | --- |
-| `[[name]]` | Einzeiliges Textfeld |
-| `[[typ:name\|Beschriftung]]` | Feld mit Typ und Beschriftung im Backend |
-| `[[text:…]]` | Text, einzeilig |
-| `[[textarea:…]]` | Text, mehrzeilig, Zeilenumbrüche werden zu `<br>` |
-| `[[rte:…]]` | Formatierter Text mit TinyMCE |
-| `[[html:…]]` | Freies HTML mit Code-Editor |
-| `[[image:…]]` | Bild aus der Dateiverwaltung, Ausgabe als `<figure>` in der Bildgröße der Vorlage |
-| `[[url:…]]` | Link-Adresse mit Seiten- und Dateiauswahl |
-| `[[number:…]]` | Ganzzahl |
-| `[[checkbox:…]]` | Ja/Nein, Ausgabe `1` oder leer |
-| `[[select:name\|Label\|a,b=Beta,c]]` | Auswahlfeld, ohne `=` sind Wert und Label gleich |
-| `[[if:name]] … [[/if]]` | Block nur ausgeben, wenn `name` befüllt oder angehakt ist |
+| `[[titel]]` | Einzeiliges Textfeld namens `titel` |
+| `[[text:titel\|Überschrift]]` | Dasselbe, im Backend beschriftet mit "Überschrift" |
+| `[[textarea:intro\|Einleitung]]` | Mehrzeiliger Text, Zeilenumbrüche werden zu `<br>` |
+| `[[rte:inhalt\|Fließtext]]` | Formatierter Text mit TinyMCE |
+| `[[html:code\|Embed-Code]]` | Freies HTML mit Code-Editor |
+| `[[image:bild\|Bild]]` | Bild aus der Dateiverwaltung, Ausgabe als `<figure>` in der Bildgröße der Vorlage |
+| `[[url:link\|Link-Ziel]]` | Link-Adresse mit Seiten- und Dateiauswahl |
+| `[[number:anzahl\|Anzahl]]` | Ganzzahl |
+| `[[checkbox:rahmen\|Mit Rahmen]]` | Ja/Nein, Ausgabe `1` oder leer |
+| `[[select:variante\|Variante\|hell,dunkel]]` | Auswahlfeld mit den Optionen hell und dunkel |
+| `[[select:farbe\|Farbe\|red=Rot,blue=Blau]]` | Auswahlfeld, vor dem `=` steht der Wert, dahinter das Label |
+| `[[if:link]] … [[/if]]` | Block nur ausgeben, wenn `link` befüllt oder angehakt ist |
 
 Namen bestehen aus Kleinbuchstaben, Ziffern und Unterstrich. Derselbe Platzhalter darf mehrfach vorkommen und wird im Backend nur einmal abgefragt. Contao-Insert-Tags wie `{{link_url::12}}` funktionieren weiterhin, sowohl in der Vorlage als auch in den eingegebenen Werten.
 
