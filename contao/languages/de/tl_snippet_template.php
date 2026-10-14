@@ -23,10 +23,10 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
             ['Beschriftung', 'Text über dem Eingabefeld im Backend. Optional, Standard ist der Name.'],
         ],
     ],
-    'examples' => 'Beispiele',
+    'examples' => 'Beispiele (die Feldnamen darin sind frei erfunden, du vergibst eigene)',
     'rows' => [
-        ['[[titel]]', 'Einzeiliges Textfeld namens "titel"'],
-        ['[[text:titel|Überschrift]]', 'Dasselbe, im Backend beschriftet mit "Überschrift"'],
+        ['[[slogan]]', 'Kurzform ohne Typ und Beschriftung: Textfeld, im Backend beschriftet mit "Slogan"'],
+        ['[[text:slogan|Werbeslogan]]', 'Langform: dasselbe Textfeld, im Backend beschriftet mit "Werbeslogan"'],
         ['[[textarea:intro|Einleitung]]', 'Mehrzeiliger Text, Zeilenumbrüche werden zu <br>'],
         ['[[rte:inhalt|Fließtext]]', 'Formatierter Text mit TinyMCE'],
         ['[[html:code|Embed-Code]]', 'Freies HTML mit Code-Editor'],

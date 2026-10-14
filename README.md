@@ -39,12 +39,12 @@ Alternativ das Paket in ein Git-Repository legen und über Packagist oder ein VC
 | `name` | Technischer Feldname: Kleinbuchstaben, Ziffern, Unterstrich | ja |
 | `Beschriftung` | Text über dem Eingabefeld im Backend | nein, Standard ist der Name |
 
-**Beispiele:**
+**Beispiele.** Die Feldnamen darin (`slogan`, `intro`, `bild` usw.) sind frei erfunden, du vergibst eigene.
 
 | Beispiel | Bedeutung |
 | --- | --- |
-| `[[titel]]` | Einzeiliges Textfeld namens `titel` |
-| `[[text:titel\|Überschrift]]` | Dasselbe, im Backend beschriftet mit "Überschrift" |
+| `[[slogan]]` | Kurzform ohne Typ und Beschriftung: Textfeld, im Backend beschriftet mit "Slogan" |
+| `[[text:slogan\|Werbeslogan]]` | Langform: dasselbe Textfeld, im Backend beschriftet mit "Werbeslogan" |
 | `[[textarea:intro\|Einleitung]]` | Mehrzeiliger Text, Zeilenumbrüche werden zu `<br>` |
 | `[[rte:inhalt\|Fließtext]]` | Formatierter Text mit TinyMCE |
 | `[[html:code\|Embed-Code]]` | Freies HTML mit Code-Editor |

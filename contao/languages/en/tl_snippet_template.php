@@ -23,10 +23,10 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
             ['Label', 'Text above the input field in the back end. Optional, defaults to the name.'],
         ],
     ],
-    'examples' => 'Examples',
+    'examples' => 'Examples (the field names in them are made up, choose your own)',
     'rows' => [
-        ['[[title]]', 'Single-line text field named "title"'],
-        ['[[text:title|Headline]]', 'The same, labelled "Headline" in the back end'],
+        ['[[slogan]]', 'Short form without type and label: text field, labelled "Slogan" in the back end'],
+        ['[[text:slogan|Tagline]]', 'Long form: the same text field, labelled "Tagline" in the back end'],
         ['[[textarea:intro|Introduction]]', 'Multi-line text, line breaks become <br>'],
         ['[[rte:content|Body text]]', 'Rich text with TinyMCE'],
         ['[[html:code|Embed code]]', 'Raw HTML with code editor'],
