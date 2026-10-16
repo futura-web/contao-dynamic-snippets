@@ -6,7 +6,25 @@ Ein Admin legt einmal eine Vorlage an, z. B. einen Embed-Code, eine Karte oder e
 
 ## Installation
 
-Als lokales Paket (z. B. in `packages/contao-dynamic-snippets` der Contao-Installation):
+### Aus diesem Repository (empfohlen)
+
+In der `composer.json` der Contao-Installation ein VCS-Repository eintragen:
+
+```json
+"repositories": [
+    { "type": "vcs", "url": "https://github.com/futura-web/contao-dynamic-snippets" }
+]
+```
+
+```bash
+composer require futura/contao-dynamic-snippets
+vendor/bin/contao-console contao:migrate
+vendor/bin/contao-console cache:clear
+```
+
+### Als lokales Paket
+
+Für die Entwicklung am Bundle selbst, z. B. in `packages/contao-dynamic-snippets` der Contao-Installation:
 
 ```json
 "repositories": [
@@ -19,8 +37,6 @@ composer require futura/contao-dynamic-snippets:@dev
 vendor/bin/contao-console contao:migrate
 vendor/bin/contao-console cache:clear
 ```
-
-Alternativ das Paket in ein Git-Repository legen und über Packagist oder ein VCS-Repository einbinden.
 
 ## Benutzung
 
