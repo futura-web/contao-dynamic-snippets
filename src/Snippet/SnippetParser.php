@@ -8,12 +8,14 @@ namespace Futura\ContaoDynamicSnippets\Snippet;
  * Erkennt Platzhalter im Snippet-HTML und ersetzt sie beim Rendern.
  *
  * Syntax:
- *   [[name]]                         Textfeld
- *   [[typ:name]]                     Feld vom Typ "typ"
- *   [[typ:name.w50]]                 mit Contao-Breitenklasse im Backend-Formular
- *   [[typ:name|Label]]               mit Beschriftung im Backend
- *   [[select:name|Label|a,b=Beta]]   Auswahl mit Optionen
- *   [[if:name]] ... [[/if]]          Block nur ausgeben, wenn Wert gesetzt
+ *   [[name]]                                Textfeld
+ *   [[typ:name]]                            Feld vom Typ "typ"
+ *   [[typ:name.w50]]                        mit Contao-Breitenklasse im Backend-Formular
+ *   [[typ:name|Label]]                      mit Beschriftung im Backend
+ *   [[select:name|Label|a,b=Beta]]          Auswahl mit Optionen
+ *   [[image:name|Label|800x600_box]]        eigene Bildgröße statt der Vorlagen-Bildgröße
+ *   [[image:name|Label|800x600_box,lightbox]] zusätzlich in der Lightbox öffnen
+ *   [[if:name]] ... [[/if]]                 Block nur ausgeben, wenn Wert gesetzt
  */
 final class SnippetParser
 {
@@ -54,13 +56,18 @@ final class SnippetParser
             }
 
             $cssClass = trim($match['cssclass'] ?? '');
+            $raw = $match['options'] ?? '';
+
+            [$imageSize, $lightbox] = 'image' === $type ? $this->parseImageSize($raw) : [null, false];
 
             $placeholders[$name] = new Placeholder(
                 $name,
                 $type,
                 $label,
-                $this->parseOptions($match['options'] ?? ''),
+                'select' === $type ? $this->parseOptions($raw) : [],
                 '' === $cssClass ? null : strtolower($cssClass),
+                $imageSize,
+                $lightbox,
             );
         }
 
@@ -104,6 +111,36 @@ final class SnippetParser
 
         // Verwaiste schließende Tags entfernen
         return str_replace('[[/if]]', '', $html);
+    }
+
+    /**
+     * Erkennt eine eigene Bildgröße für einen image-Platzhalter, z. B. "800x600_box,lightbox"
+     * oder die ID einer bestehenden Contao-Bildgröße, z. B. "12,lightbox".
+     *
+     * @return array{0: array{0:int,1:int,2:string}|int|null, 1: bool}
+     */
+    private function parseImageSize(string $raw): array
+    {
+        $size = null;
+        $lightbox = false;
+
+        foreach (explode(',', $raw) as $token) {
+            $token = trim($token);
+
+            if ('' === $token) {
+                continue;
+            }
+
+            if ('lightbox' === strtolower($token)) {
+                $lightbox = true;
+            } elseif (preg_match('/^(\d+)x(\d+)(?:_([a-z_]+))?$/i', $token, $m)) {
+                $size = [(int) $m[1], (int) $m[2], strtolower($m[3] ?? '')];
+            } elseif (ctype_digit($token)) {
+                $size = (int) $token;
+            }
+        }
+
+        return [$size, $lightbox];
     }
 
     /**

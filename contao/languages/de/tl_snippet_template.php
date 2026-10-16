@@ -6,7 +6,7 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['name'] = ['Name', 'Interner Name der
 $GLOBALS['TL_LANG']['tl_snippet_template']['alias'] = ['Alias', 'Eindeutiger Kurzname. Leer lassen, um ihn automatisch zu erzeugen.'];
 $GLOBALS['TL_LANG']['tl_snippet_template']['description'] = ['Beschreibung', 'Optionale Notiz für Redakteure.'];
 $GLOBALS['TL_LANG']['tl_snippet_template']['html'] = ['HTML-Snippet', 'Das HTML mit Platzhaltern in doppelten eckigen Klammern, z. B. [[text:headline|Überschrift]].'];
-$GLOBALS['TL_LANG']['tl_snippet_template']['imgSize'] = ['Bildgröße', 'Wird auf alle Bild-Platzhalter (Typ image) dieser Vorlage angewendet.'];
+$GLOBALS['TL_LANG']['tl_snippet_template']['imgSize'] = ['Bildgröße', 'Standard für alle Bild-Platzhalter (Typ image) dieser Vorlage, falls der Platzhalter keine eigene Größe angibt.'];
 
 $GLOBALS['TL_LANG']['tl_snippet_template']['title_legend'] = 'Vorlage';
 $GLOBALS['TL_LANG']['tl_snippet_template']['snippet_legend'] = 'HTML-Snippet';
@@ -32,6 +32,8 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
         ['[[rte:inhalt|Fließtext]]', 'Formatierter Text mit TinyMCE'],
         ['[[html:code|Embed-Code]]', 'Freies HTML mit Code-Editor'],
         ['[[image:bild|Bild]]', 'Bild aus der Dateiverwaltung, Ausgabe als <figure> in der eingestellten Bildgröße'],
+        ['[[image:bild|Bild|800x600_box]]', 'Eigene Bildgröße statt der Vorlagen-Bildgröße'],
+        ['[[image:bild|Bild|800x600_box,lightbox]]', 'Zusätzlich: Bild öffnet beim Klick in der Lightbox'],
         ['[[url:link|Link-Ziel]]', 'Link-Adresse mit Seiten- und Dateiauswahl'],
         ['[[number:anzahl|Anzahl]]', 'Ganzzahl'],
         ['[[checkbox:rahmen|Mit Rahmen]]', 'Ja/Nein, Ausgabe 1 oder leer'],

@@ -50,6 +50,8 @@ Alternativ das Paket in ein Git-Repository legen und über Packagist oder ein VC
 | `[[rte:inhalt\|Fließtext]]` | Formatierter Text mit TinyMCE |
 | `[[html:code\|Embed-Code]]` | Freies HTML mit Code-Editor |
 | `[[image:bild\|Bild]]` | Bild aus der Dateiverwaltung, Ausgabe als `<figure>` in der Bildgröße der Vorlage |
+| `[[image:bild\|Bild\|800x600_box]]` | Eigene Bildgröße statt der Vorlagen-Bildgröße, hier 800×600 im Box-Modus |
+| `[[image:bild\|Bild\|800x600_box,lightbox]]` | Zusätzlich: Bild öffnet beim Klick in der Lightbox |
 | `[[url:link\|Link-Ziel]]` | Link-Adresse mit Seiten- und Dateiauswahl |
 | `[[number:anzahl\|Anzahl]]` | Ganzzahl |
 | `[[checkbox:rahmen\|Mit Rahmen]]` | Ja/Nein, Ausgabe `1` oder leer |
@@ -106,6 +108,20 @@ Werte werden je nach Typ behandelt:
 - `textarea`: maskiert plus `nl2br`.
 - `html`, `rte`: unverändert ausgegeben.
 - `image`: über Contao Image Studio als `<figure>` mit `srcset`, Alt-Text und Bildunterschrift aus den Datei-Metadaten.
+
+### Bildgröße pro Platzhalter
+
+Die Bildgröße unter "Bildeinstellungen" der Vorlage gilt als Standard für alle `image`-Platzhalter dieser Vorlage. Hat eine Vorlage mehrere Bilder mit unterschiedlichen Anforderungen, etwa ein großes Hero-Bild und ein kleines Icon, lässt sich die Größe pro Platzhalter überschreiben: als dritter Teil nach dem zweiten `|`, genauso wie bei `select` die Optionen.
+
+| Angabe | Bedeutung |
+| --- | --- |
+| *(leer)* | Verwendet die Bildgröße der Vorlage |
+| `800x600` | Feste Breite × Höhe, proportionales Zuschneiden (Contao-Standardmodus) |
+| `800x600_box` | Breite × Höhe mit Zuschneidemodus, z. B. `box`, `crop`, `proportional`, `landscape`, `portrait` |
+| `12` | Verweist auf eine bestehende, im Contao-Backend angelegte Bildgröße mit der ID 12 |
+| `800x600_box,lightbox` | Zusätzlich `lightbox` angeben: Bild öffnet beim Klick in der Lightbox |
+
+Diese Angabe gehört in die Vorlage, nicht in das Inhaltselement, weil sie Teil des Layouts ist, das der Vorlagen-Autor festlegt. Redakteure wählen im Inhaltselement nur das Bild selbst aus.
 
 Das Twig-Template `content_element/snippet_element.html.twig` kann wie üblich überschrieben werden. Verfügbare Variablen: `html` (fertiges Snippet), `snippet` (`id`, `name`, `alias`) und `values` (Rohwerte).
 

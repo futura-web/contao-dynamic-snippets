@@ -6,7 +6,7 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['name'] = ['Name', 'Internal name, sh
 $GLOBALS['TL_LANG']['tl_snippet_template']['alias'] = ['Alias', 'Unique short name. Leave empty to generate it automatically.'];
 $GLOBALS['TL_LANG']['tl_snippet_template']['description'] = ['Description', 'Optional note for editors.'];
 $GLOBALS['TL_LANG']['tl_snippet_template']['html'] = ['HTML snippet', 'The HTML with placeholders in double square brackets, e.g. [[text:headline|Headline]].'];
-$GLOBALS['TL_LANG']['tl_snippet_template']['imgSize'] = ['Image size', 'Applied to all image placeholders (type image) of this template.'];
+$GLOBALS['TL_LANG']['tl_snippet_template']['imgSize'] = ['Image size', 'Default for all image placeholders (type image) of this template, unless the placeholder specifies its own size.'];
 
 $GLOBALS['TL_LANG']['tl_snippet_template']['title_legend'] = 'Template';
 $GLOBALS['TL_LANG']['tl_snippet_template']['snippet_legend'] = 'HTML snippet';
@@ -32,6 +32,8 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
         ['[[rte:content|Body text]]', 'Rich text with TinyMCE'],
         ['[[html:code|Embed code]]', 'Raw HTML with code editor'],
         ['[[image:picture|Picture]]', 'Image from the file manager, rendered as <figure> in the configured size'],
+        ['[[image:picture|Picture|800x600_box]]', 'Own image size instead of the template size'],
+        ['[[image:picture|Picture|800x600_box,lightbox]]', 'Also: image opens in a lightbox when clicked'],
         ['[[url:link|Link target]]', 'Link address with page and file picker'],
         ['[[number:count|Count]]', 'Integer'],
         ['[[checkbox:border|With border]]', 'Yes/no, outputs 1 or empty'],

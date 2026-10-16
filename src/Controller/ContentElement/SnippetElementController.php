@@ -84,25 +84,31 @@ class SnippetElementController extends AbstractContentElementController
         return match ($placeholder->type) {
             'html', 'rte' => $value,
             'textarea' => nl2br(StringUtil::specialchars($value)),
-            'image' => $this->renderImage($value, $snippet['imgSize']),
+            'image' => $this->renderImage($value, $placeholder, $snippet['imgSize']),
             default => StringUtil::specialchars($value),
         };
     }
 
-    private function renderImage(string $uuid, mixed $imgSize): string
+    private function renderImage(string $uuid, Placeholder $placeholder, mixed $templateImgSize): string
     {
         if (!Validator::isStringUuid($uuid)) {
             return '';
         }
 
-        $size = StringUtil::deserialize($imgSize);
+        // Eigene Bildgröße des Platzhalters geht vor, sonst die Bildgröße der Vorlage
+        $size = $placeholder->imageSize ?? (StringUtil::deserialize($templateImgSize) ?: null);
 
-        $figure = $this->studio
+        $builder = $this->studio
             ->createFigureBuilder()
             ->fromUuid($uuid)
-            ->setSize($size ?: null)
-            ->buildIfResourceExists()
+            ->setSize($size)
         ;
+
+        if ($placeholder->lightbox) {
+            $builder->enableLightbox(true);
+        }
+
+        $figure = $builder->buildIfResourceExists();
 
         if (null === $figure) {
             return '';
