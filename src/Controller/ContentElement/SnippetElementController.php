@@ -7,6 +7,7 @@ namespace Futura\ContaoDynamicSnippets\Controller\ContentElement;
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
+use Contao\CoreBundle\File\Metadata;
 use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\Twig\FragmentTemplate;
@@ -52,8 +53,11 @@ class SnippetElementController extends AbstractContentElementController
 
         foreach ($this->parser->parse((string) $snippet['html']) as $name => $placeholder) {
             $value = (string) ($data[$name] ?? '');
-            $rendered[$name] = $this->renderValue($placeholder, $value, $snippet);
             $isEmpty[$name] = '' === trim($value);
+
+            $rendered[$name] = 'image' === $placeholder->type
+                ? $this->renderImage($placeholder, $data, $snippet['imgSize'])
+                : $this->renderValue($placeholder, $value);
         }
 
         $html = $this->parser->render((string) $snippet['html'], $rendered, $isEmpty);
@@ -72,10 +76,7 @@ class SnippetElementController extends AbstractContentElementController
         return $template->getResponse();
     }
 
-    /**
-     * @param array<string, mixed> $snippet
-     */
-    private function renderValue(Placeholder $placeholder, string $value, array $snippet): string
+    private function renderValue(Placeholder $placeholder, string $value): string
     {
         if ('' === $value) {
             return '';
@@ -84,27 +85,41 @@ class SnippetElementController extends AbstractContentElementController
         return match ($placeholder->type) {
             'html', 'rte' => $value,
             'textarea' => nl2br(StringUtil::specialchars($value)),
-            'image' => $this->renderImage($value, $placeholder, $snippet['imgSize']),
             default => StringUtil::specialchars($value),
         };
     }
 
-    private function renderImage(string $uuid, Placeholder $placeholder, mixed $templateImgSize): string
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function renderImage(Placeholder $placeholder, array $data, mixed $templateImgSize): string
     {
+        $uuid = (string) ($data[$placeholder->name] ?? '');
+
         if (!Validator::isStringUuid($uuid)) {
             return '';
         }
 
-        // Eigene Bildgröße des Platzhalters geht vor, sonst die Bildgröße der Vorlage
-        $size = $placeholder->imageSize ?? (StringUtil::deserialize($templateImgSize) ?: null);
-
         $builder = $this->studio
             ->createFigureBuilder()
             ->fromUuid($uuid)
-            ->setSize($size)
+            ->setSize($this->resolveImageSize($placeholder, $data, $templateImgSize))
         ;
 
-        if ($placeholder->lightbox) {
+        $overwrite = array_filter([
+            Metadata::VALUE_ALT => (string) ($data[$placeholder->name.'_alt'] ?? ''),
+            Metadata::VALUE_TITLE => (string) ($data[$placeholder->name.'_title'] ?? ''),
+            Metadata::VALUE_CAPTION => (string) ($data[$placeholder->name.'_caption'] ?? ''),
+            Metadata::VALUE_URL => (string) ($data[$placeholder->name.'_url'] ?? ''),
+        ], static fn (string $value): bool => '' !== $value);
+
+        if ([] !== $overwrite) {
+            $builder->setOverwriteMetadata(new Metadata($overwrite));
+        }
+
+        $fullsize = $data[$placeholder->name.'_fullsize'] ?? ($placeholder->lightbox ? '1' : '');
+
+        if ($fullsize) {
             $builder->enableLightbox(true);
         }
 
@@ -115,5 +130,24 @@ class SnippetElementController extends AbstractContentElementController
         }
 
         return $this->twig->render('@Contao/component/_figure.html.twig', ['figure' => $figure]);
+    }
+
+    /**
+     * Eigene Bildgröße des Redakteurs geht vor der im Platzhalter definierten
+     * Standardgröße, die wiederum vor der Bildgröße der Vorlage geht.
+     *
+     * @param array<string, mixed> $data
+     *
+     * @return array{0:int,1:int,2:string}|int|string|null
+     */
+    private function resolveImageSize(Placeholder $placeholder, array $data, mixed $templateImgSize): array|int|string|null
+    {
+        $own = $data[$placeholder->name.'_size'] ?? '';
+
+        if (\is_string($own) && '' !== trim($own)) {
+            return StringUtil::deserialize($own);
+        }
+
+        return $placeholder->imageSize ?? (StringUtil::deserialize($templateImgSize) ?: null);
     }
 }

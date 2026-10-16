@@ -107,11 +107,27 @@ Werte werden je nach Typ behandelt:
 - `text`, `url`, `number`, `select`, `checkbox`: HTML-Sonderzeichen werden maskiert.
 - `textarea`: maskiert plus `nl2br`.
 - `html`, `rte`: unverändert ausgegeben.
-- `image`: über Contao Image Studio als `<figure>` mit `srcset`, Alt-Text und Bildunterschrift aus den Datei-Metadaten.
+- `image`: über Contao Image Studio als `<figure>` mit `srcset`.
 
-### Bildgröße pro Platzhalter
+### Bildfelder im Inhaltselement
 
-Die Bildgröße unter "Bildeinstellungen" der Vorlage gilt als Standard für alle `image`-Platzhalter dieser Vorlage. Hat eine Vorlage mehrere Bilder mit unterschiedlichen Anforderungen, etwa ein großes Hero-Bild und ein kleines Icon, lässt sich die Größe pro Platzhalter überschreiben: als dritter Teil nach dem zweiten `|`, genauso wie bei `select` die Optionen.
+Ein `image`-Platzhalter erzeugt im Inhaltselement nicht nur die Dateiauswahl, sondern dieselben Begleitfelder wie Contaos eigenes Bild-Inhaltselement. Der Redakteur hat damit bei jedem Bild die volle Kontrolle, ganz ohne Vorlagen-Änderung:
+
+| Feld | Bedeutung |
+| --- | --- |
+| Quelldatei | Dateiauswahl aus der Dateiverwaltung |
+| Bildgröße | Abmessungen und Skalierungsmodus, wie beim nativen Contao-Bildfeld |
+| Großansicht/Neues Fenster | Bild in der Lightbox öffnen, bzw. bei eigener Bildlink-Adresse den Link in einem neuen Fenster öffnen |
+| Alternativer Text | Überschreibt den Alt-Text der Datei |
+| Bildtitel | Überschreibt den Titel der Datei |
+| Bildlink-Adresse | Eigenes Linkziel, überschreibt die Lightbox |
+| Bildunterschrift | Text unterhalb des Bildes |
+
+Lässt der Redakteur ein Feld leer, wird die Bildgröße in folgender Reihenfolge ermittelt: eigene Angabe im Platzhalter der Vorlage, sonst die Bildgröße der Vorlage selbst, sonst die Originalgröße der Datei. Alt-Text, Titel und Unterschrift fallen bei leerem Feld auf die Metadaten der Datei zurück.
+
+### Eigene Bildgröße im Platzhalter vorbelegen
+
+Hat eine Vorlage mehrere Bilder mit unterschiedlichen Anforderungen, etwa ein großes Hero-Bild und ein kleines Icon, lässt sich für jeden Platzhalter eine eigene Standardgröße vorbelegen: als dritter Teil nach dem zweiten `|`, genauso wie bei `select` die Optionen. Das ist nur ein Vorschlag, der Redakteur kann ihn im Inhaltselement jederzeit überschreiben.
 
 | Angabe | Bedeutung |
 | --- | --- |
@@ -119,9 +135,7 @@ Die Bildgröße unter "Bildeinstellungen" der Vorlage gilt als Standard für all
 | `800x600` | Feste Breite × Höhe, proportionales Zuschneiden (Contao-Standardmodus) |
 | `800x600_box` | Breite × Höhe mit Zuschneidemodus, z. B. `box`, `crop`, `proportional`, `landscape`, `portrait` |
 | `12` | Verweist auf eine bestehende, im Contao-Backend angelegte Bildgröße mit der ID 12 |
-| `800x600_box,lightbox` | Zusätzlich `lightbox` angeben: Bild öffnet beim Klick in der Lightbox |
-
-Diese Angabe gehört in die Vorlage, nicht in das Inhaltselement, weil sie Teil des Layouts ist, das der Vorlagen-Autor festlegt. Redakteure wählen im Inhaltselement nur das Bild selbst aus.
+| `800x600_box,lightbox` | Zusätzlich `lightbox` angeben: Lightbox ist vorausgewählt, lässt sich aber im Inhaltselement wieder abwählen |
 
 Das Twig-Template `content_element/snippet_element.html.twig` kann wie üblich überschrieben werden. Verfügbare Variablen: `html` (fertiges Snippet), `snippet` (`id`, `name`, `alias`) und `values` (Rohwerte).
 

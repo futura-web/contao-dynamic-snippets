@@ -74,13 +74,16 @@ class ContentElementListener
             return;
         }
 
-        $html = $this->connection->fetchOne('SELECT html FROM tl_snippet_template WHERE id = ?', [$templateId]);
+        $template = $this->connection->fetchAssociative(
+            'SELECT html, imgSize FROM tl_snippet_template WHERE id = ?',
+            [$templateId],
+        );
 
-        if (false === $html) {
+        if (!$template) {
             return;
         }
 
-        $placeholders = $this->parser->parse((string) $html);
+        $placeholders = $this->parser->parse((string) $template['html']);
 
         if ([] === $placeholders) {
             return;
@@ -89,14 +92,18 @@ class ContentElementListener
         $fieldNames = [];
 
         foreach ($placeholders as $placeholder) {
-            $fieldName = $placeholder->getFieldName();
-            $fieldNames[] = $fieldName;
+            foreach ($this->fieldFactory->create($placeholder) as $suffix => $definition) {
+                $fieldName = $placeholder->getFieldName().$suffix;
+                $dataKey = $placeholder->name.$suffix;
+                $kind = $this->fieldKind($placeholder, $suffix);
+                $default = $this->defaultValue($placeholder, $suffix, $template['imgSize']);
 
-            $definition = $this->fieldFactory->create($placeholder);
-            $definition['load_callback'] = [fn ($value, DataContainer $dc) => $this->loadValue($placeholder, $dc)];
-            $definition['save_callback'] = [fn ($value, DataContainer $dc) => $this->saveValue($placeholder, $value, $dc)];
+                $definition['load_callback'] = [fn ($value, DataContainer $dc) => $this->loadValue($dataKey, $kind, $default, $dc)];
+                $definition['save_callback'] = [fn ($value, DataContainer $dc) => $this->saveValue($dataKey, $kind, $value, $dc)];
 
-            $GLOBALS['TL_DCA']['tl_content']['fields'][$fieldName] = $definition;
+                $GLOBALS['TL_DCA']['tl_content']['fields'][$fieldName] = $definition;
+                $fieldNames[] = $fieldName;
+            }
         }
 
         PaletteManipulator::create()
@@ -127,26 +134,52 @@ class ContentElementListener
         $this->data[$id] = $data;
     }
 
-    private function loadValue(Placeholder $placeholder, DataContainer $dc): mixed
+    private function fieldKind(Placeholder $placeholder, string $suffix): string
     {
-        $value = $this->loadData((int) $dc->id)[$placeholder->name] ?? '';
+        if ('' === $suffix) {
+            return match ($placeholder->type) {
+                'image' => 'image',
+                'checkbox' => 'checkbox',
+                default => 'text',
+            };
+        }
 
-        if ('image' === $placeholder->type) {
-            return Validator::isStringUuid($value) ? StringUtil::uuidToBin($value) : '';
+        return '_fullsize' === $suffix ? 'checkbox' : 'text';
+    }
+
+    /**
+     * Vorbelegung für neue oder vor diesem Update gespeicherte Datensätze: eigene
+     * Angabe im Platzhalter, sonst die Bildgröße der Vorlage.
+     */
+    private function defaultValue(Placeholder $placeholder, string $suffix, mixed $templateImgSize): mixed
+    {
+        return match ($suffix) {
+            '_size' => $placeholder->imageSize ?? (StringUtil::deserialize($templateImgSize) ?: ''),
+            '_fullsize' => $placeholder->lightbox ? '1' : '',
+            default => '',
+        };
+    }
+
+    private function loadValue(string $dataKey, string $kind, mixed $default, DataContainer $dc): mixed
+    {
+        $value = $this->loadData((int) $dc->id)[$dataKey] ?? $default;
+
+        if ('image' === $kind) {
+            return \is_string($value) && Validator::isStringUuid($value) ? StringUtil::uuidToBin($value) : '';
         }
 
         return $value;
     }
 
-    private function saveValue(Placeholder $placeholder, mixed $value, DataContainer $dc): mixed
+    private function saveValue(string $dataKey, string $kind, mixed $value, DataContainer $dc): mixed
     {
-        $normalized = match ($placeholder->type) {
+        $normalized = match ($kind) {
             'image' => Validator::isBinaryUuid($value) ? StringUtil::binToUuid($value) : (Validator::isStringUuid((string) $value) ? (string) $value : ''),
             'checkbox' => $value ? '1' : '',
-            default => (string) $value,
+            default => \is_array($value) ? serialize($value) : (string) $value,
         };
 
-        $this->pending[(int) $dc->id][$placeholder->name] = $normalized;
+        $this->pending[(int) $dc->id][$dataKey] = $normalized;
 
         // Den ursprünglich geladenen Wert zurückgeben, damit DC_Table keine
         // (nicht existierende) Spalte aktualisiert. Gespeichert wird im onsubmit.
