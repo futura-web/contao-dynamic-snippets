@@ -1,6 +1,10 @@
+<img src="futura-logo.svg" alt="Futura Web" width="220">
+
 # Contao Dynamic Snippets
 
 Wiederverwendbare HTML-Snippets mit Platzhaltern als Inhaltselemente für **Contao 5**.
+
+Ein Projekt von [Futura Web](https://futura-web.de).
 
 Ein Admin legt einmal eine Vorlage an, z. B. einen Embed-Code, eine Karte oder ein Layout-Fragment, und markiert die veränderlichen Stellen mit Platzhaltern. Redakteure wählen die Vorlage danach als normales Inhaltselement aus und füllen nur noch die Felder aus. HTML-Kenntnisse sind dafür nicht nötig.
 
