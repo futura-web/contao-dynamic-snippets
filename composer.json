@@ -1,7 +1,7 @@
 {
     "name": "futura/contao-dynamic-snippets",
     "type": "contao-bundle",
-    "description": "HTML-Snippets mit Platzhaltern als wiederverwendbare Inhaltselemente für Contao 5",
+    "description": "HTML-Snippets mit Platzhaltern als wiederverwendbare Inhaltselemente für Contao 5 – ohne eigene Modulprogrammierung",
     "keywords": ["contao", "contao5", "content-element", "snippet", "template"],
     "homepage": "https://github.com/futura-web/contao-dynamic-snippets",
     "license": "LGPL-3.0-or-later",
