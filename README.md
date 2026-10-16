@@ -6,7 +6,7 @@ Wiederverwendbare HTML-Snippets mit Platzhaltern als Inhaltselemente für **Cont
 
 Ein Projekt von [Futura Web](https://futura-web.de).
 
-Ein Admin legt einmal eine Vorlage an, z. B. einen Embed-Code, eine Karte oder ein Layout-Fragment, und markiert die veränderlichen Stellen mit Platzhaltern. Redakteure wählen die Vorlage danach als normales Inhaltselement aus und füllen nur noch die Felder aus. HTML-Kenntnisse sind dafür nicht nötig.
+Ein Admin legt einmal eine HTML-Vorlage an, z. B. einen Embed-Code, eine Karte oder ein Layout-Fragment, und markiert die veränderlichen Stellen mit Platzhaltern. Redakteure wählen die Vorlage danach als normales Inhaltselement aus und füllen nur noch die Felder aus. HTML-Kenntnisse sind dafür nicht nötig.
 
 Für wiederkehrende, strukturierte Bausteine entfällt damit die langwierige eigene Modulprogrammierung: kein eigener DCA, kein eigener Fragment-Controller, kein eigenes Twig-Template pro Baustein mehr. Die Vorlage im Backend übernimmt diese Arbeit.
 
