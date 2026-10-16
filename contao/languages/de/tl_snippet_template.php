@@ -16,10 +16,11 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
     'title' => 'Platzhalter-Syntax',
     'structure' => [
         'title' => 'Aufbau',
-        'pattern' => '[[typ:name|Beschriftung]]',
+        'pattern' => '[[typ:name.cssklasse|Beschriftung]]',
         'rows' => [
             ['typ', 'Feldtyp: text, textarea, rte, html, image, url, number, checkbox, select. Optional, Standard ist text.'],
             ['name', 'Technischer Feldname: Kleinbuchstaben, Ziffern, Unterstrich. Pflicht.'],
+            ['.cssklasse', 'Breite des Felds im Backend-Formular, direkt an den Namen angehängt, z. B. .w50. Optional, jeder Feldtyp hat eine sinnvolle Standardbreite.'],
             ['Beschriftung', 'Text über dem Eingabefeld im Backend. Optional, Standard ist der Name.'],
         ],
     ],
@@ -37,8 +38,10 @@ $GLOBALS['TL_LANG']['tl_snippet_template']['syntax'] = [
         ['[[select:variante|Variante|hell,dunkel]]', 'Auswahlfeld mit den Optionen hell und dunkel'],
         ['[[select:farbe|Farbe|red=Rot,blue=Blau]]', 'Auswahlfeld; vor dem = steht der Wert, dahinter das Label'],
         ['[[if:link]] Inhalt [[/if]]', 'Block nur ausgeben, wenn das Feld "link" befüllt bzw. angehakt ist'],
+        ['[[text:vorname.w50|Vorname]] [[text:nachname.w50|Nachname]]', 'Zwei Felder nebeneinander, je halbe Breite'],
+        ['[[text:ort.w33|Ort]]', 'Drittelbreite, nützlich für drei Felder in einer Zeile'],
     ],
-    'note' => 'Namen bestehen aus Kleinbuchstaben, Ziffern und Unterstrich. Insert-Tags wie {{link_url::12}} funktionieren weiterhin. Derselbe Platzhalter darf mehrfach vorkommen und wird nur einmal abgefragt.',
+    'note' => 'Namen bestehen aus Kleinbuchstaben, Ziffern und Unterstrich. Gängige Breitenklassen: w25, w33, w50, w66, w75, clr (erzwingt eine neue Zeile). Mehrere Klassen mit + verbinden, z. B. .w33+clr. Insert-Tags wie {{link_url::12}} funktionieren weiterhin. Derselbe Platzhalter darf mehrfach vorkommen und wird nur einmal abgefragt.',
 ];
 
 $GLOBALS['TL_LANG']['tl_snippet_template']['deleteBlocked'] = 'Die Vorlage "%s" wird noch von %d Inhaltselement(en) verwendet und kann nicht gelöscht werden.';

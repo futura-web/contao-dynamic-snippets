@@ -88,6 +88,10 @@ final class FieldDefinitionFactory
             ],
         };
 
+        if (null !== $placeholder->cssClass) {
+            $definition['eval']['tl_class'] = str_replace('+', ' ', $placeholder->cssClass);
+        }
+
         $definition['label'] = [$placeholder->label, ''];
         $definition['exclude'] = true;
 

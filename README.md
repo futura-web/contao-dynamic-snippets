@@ -31,12 +31,13 @@ Alternativ das Paket in ein Git-Repository legen und über Packagist oder ein VC
 
 ### Platzhalter-Syntax
 
-**Aufbau:** `[[typ:name|Beschriftung]]`
+**Aufbau:** `[[typ:name.cssklasse|Beschriftung]]`
 
 | Bestandteil | Bedeutung | Pflicht |
 | --- | --- | --- |
 | `typ` | Feldtyp: text, textarea, rte, html, image, url, number, checkbox, select | nein, Standard ist text |
 | `name` | Technischer Feldname: Kleinbuchstaben, Ziffern, Unterstrich | ja |
+| `.cssklasse` | Breite des Felds im Backend-Formular, direkt an den Namen angehängt | nein, jeder Feldtyp hat eine sinnvolle Standardbreite |
 | `Beschriftung` | Text über dem Eingabefeld im Backend | nein, Standard ist der Name |
 
 **Beispiele.** Die Feldnamen darin (`slogan`, `intro`, `bild` usw.) sind frei erfunden, du vergibst eigene.
@@ -55,8 +56,27 @@ Alternativ das Paket in ein Git-Repository legen und über Packagist oder ein VC
 | `[[select:variante\|Variante\|hell,dunkel]]` | Auswahlfeld mit den Optionen hell und dunkel |
 | `[[select:farbe\|Farbe\|red=Rot,blue=Blau]]` | Auswahlfeld, vor dem `=` steht der Wert, dahinter das Label |
 | `[[if:link]] Inhalt [[/if]]` | Block nur ausgeben, wenn `link` befüllt oder angehakt ist |
+| `[[text:vorname.w50\|Vorname]] [[text:nachname.w50\|Nachname]]` | Zwei Felder nebeneinander, je halbe Breite |
+| `[[text:ort.w33\|Ort]]` | Drittelbreite, nützlich für drei Felder in einer Zeile |
 
 Namen bestehen aus Kleinbuchstaben, Ziffern und Unterstrich. Derselbe Platzhalter darf mehrfach vorkommen und wird im Backend nur einmal abgefragt. Contao-Insert-Tags wie `{{link_url::12}}` funktionieren weiterhin, sowohl in der Vorlage als auch in den eingegebenen Werten.
+
+### Breite der Backend-Felder
+
+Jeder Feldtyp hat eine sinnvolle Standardbreite: einzeilige Felder wie `text`, `url`, `number` und `select` nehmen standardmäßig die halbe Zeile ein (`w50`), mehrzeilige und komplexere Felder wie `textarea`, `rte`, `html` und `image` die volle Breite.
+
+Diese Standardbreite lässt sich pro Platzhalter überschreiben, indem eine Contao-CSS-Klasse mit einem Punkt an den Namen angehängt wird, z. B. `[[text:vorname.w33|Vorname]]`. Gängige Klassen:
+
+| Klasse | Breite |
+| --- | --- |
+| `w25` | ein Viertel |
+| `w33` | ein Drittel |
+| `w50` | die Hälfte |
+| `w66` | zwei Drittel |
+| `w75` | drei Viertel |
+| `clr` | erzwingt eine neue Zeile (volle Breite) |
+
+Mehrere Klassen lassen sich mit `+` verbinden, z. B. `.w33+clr`, um ein drittelbreites Feld zu erzeugen, das trotzdem eine eigene Zeile beginnt. Felder mit derselben Breitenklasse, die direkt aufeinanderfolgen, stehen im Backend-Formular nebeneinander, genau wie bei Contaos eigenen Formularen.
 
 ### Beispiel: Teaser-Kachel
 

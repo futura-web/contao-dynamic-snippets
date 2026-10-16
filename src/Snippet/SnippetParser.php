@@ -10,13 +10,14 @@ namespace Futura\ContaoDynamicSnippets\Snippet;
  * Syntax:
  *   [[name]]                         Textfeld
  *   [[typ:name]]                     Feld vom Typ "typ"
+ *   [[typ:name.w50]]                 mit Contao-Breitenklasse im Backend-Formular
  *   [[typ:name|Label]]               mit Beschriftung im Backend
  *   [[select:name|Label|a,b=Beta]]   Auswahl mit Optionen
  *   [[if:name]] ... [[/if]]          Block nur ausgeben, wenn Wert gesetzt
  */
 final class SnippetParser
 {
-    private const PLACEHOLDER = '/\[\[(?:(?<type>[a-z]+):)?(?<name>[a-z][a-z0-9_]*)(?:\|(?<label>[^|\]]*))?(?:\|(?<options>[^\]]*))?\]\]/i';
+    private const PLACEHOLDER = '/\[\[(?:(?<type>[a-z]+):)?(?<name>[a-z][a-z0-9_]*)(?:\.(?<cssclass>[a-z0-9+]+))?(?:\|(?<label>[^|\]]*))?(?:\|(?<options>[^\]]*))?\]\]/i';
 
     private const CONDITION = '/\[\[if:(?<name>[a-z][a-z0-9_]*)\]\](?<body>.*?)\[\[\/if\]\]/is';
 
@@ -52,7 +53,15 @@ final class SnippetParser
                 $label = ucfirst(str_replace('_', ' ', $name));
             }
 
-            $placeholders[$name] = new Placeholder($name, $type, $label, $this->parseOptions($match['options'] ?? ''));
+            $cssClass = trim($match['cssclass'] ?? '');
+
+            $placeholders[$name] = new Placeholder(
+                $name,
+                $type,
+                $label,
+                $this->parseOptions($match['options'] ?? ''),
+                '' === $cssClass ? null : strtolower($cssClass),
+            );
         }
 
         // Bedingungen ohne eigenes Feld bekommen eine Checkbox
